@@ -1,65 +1,70 @@
-import Image from "next/image";
 
-export default function Home() {
+
+import HeroBanners from "@/component/HeroBanners";
+
+import ProductsSection from "@/component/ProductsSection";
+import ContactSection from "@/component/ContactSection";
+import { Product } from "@prisma/client";
+import { getProducts } from "./lib/products";
+
+// // Categories Bar
+function CategoriesBar() {
+  const cats = [
+    { icon: "🏠", label: "الكل" },
+    { icon: "🔧", label: "أدوات يدوية" },
+    { icon: "⚡", label: "أجهزة كهربائية" },
+    { icon: "🧪", label: "مواد طبية" },
+    { icon: "🦷", label: "تقويم الأسنان" },
+    { icon: "🧴", label: "منتجات العناية" },
+    { icon: "📦", label: "باقات وعروض" },
+  ];
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="bg-white border-b border-[#e8edf2]">
+      <div className="max-w-[1200px] mx-auto flex overflow-x-auto scrollbar-none">
+        {cats.map((cat, i) => (
+          <div key={i} className="flex items-center gap-2 px-6 py-4 text-sm font-bold text-[#5a6a7a] hover:text-[#1a5f7a] border-b-[3px] border-transparent hover:border-[#1a5f7a] cursor-pointer whitespace-nowrap transition-all flex-shrink-0">
+            <span className="text-xl">{cat.icon}</span>
+            {cat.label}
+          </div>
+        ))}
+      </div>
     </div>
+  );
+}
+
+// // Stats Bar
+function StatsBar() {
+  const stats = [
+    { num: "+5000", label: "منتج متاح", color: "text-[#1a5f7a]" },
+    { num: "+200", label: "عيادة شريكة", color: "text-[#00c9a7]" },
+    { num: "+15", label: "سنة خبرة", color: "text-[#ff6b35]" },
+    { num: "24/7", label: "دعم فني مستمر", color: "text-[#7c3aed]" },
+  ];
+  return (
+    <div className="bg-white border-t border-b border-[#e8edf2] py-8">
+      <div className="max-w-[1100px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-5 text-center px-5">
+        {stats.map((s, i) => (
+          <div key={i}>
+            <div className={`text-3xl font-black ${s.color}`}>{s.num}</div>
+            <div className="text-[#5a6a7a] text-xs mt-1">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default async function HomePage() {
+
+  const products: Product[] = await getProducts(); // جلب من الداتابيز مباشرة 
+
+  return (
+    <>
+      <HeroBanners />
+      <CategoriesBar />
+      <ProductsSection products={products} />
+      <StatsBar />
+      <ContactSection />
+    </>
   );
 }
