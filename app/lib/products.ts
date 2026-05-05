@@ -5,7 +5,7 @@ import { prisma } from "./db";
 
 // جلب كل المنتجات
 export async function getProducts() {
-const products = await fetch("http://localhost:3000/api/products").then((res) => res.json());
+const products = await prisma.product.findMany();
 return products;
 }
 
