@@ -49,12 +49,36 @@ export default function RegisterPage() {
       return setError("كلمة المرور وتأكيدها مش متطابقين");
     if (!form.agreed)
       return setError("لازم توافق على الشروط والأحكام");
+setLoading(true);
 
-    setLoading(true);
-    // هنا هتضيف منطق التسجيل (NextAuth / API Route)
-    await new Promise((r) => setTimeout(r, 1200));
+try {
+  const res = await fetch("/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: form.firstName + " " + form.lastName,
+      email: form.email,
+      password: form.password,
+      phone: form.phone,
+    }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    setError(data.message || "حدث خطأ");
     setLoading(false);
-    setSuccess(true);
+    return;
+  }
+
+  setSuccess(true);
+} catch (err) {
+  setError("Server error");
+} finally {
+  setLoading(false);
+}
   };
 
   return (

@@ -23,11 +23,33 @@ const Login = () => {
     if (!email.includes("@")) { setError("البريد الإلكتروني غير صحيح"); return }
     if (password.length < 6)  { setError("كلمة المرور قصيرة جداً (6 أحرف على الأقل)"); return }
 
-    setLoading(true);
-    // هنا هتحط منطق الـ auth بعدين (NextAuth أو غيره)
-    await new Promise((r) => setTimeout(r, 1000));
+setLoading(true);
+
+try {
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    setError(data.message || "Login failed");
+    return;
+  }
+
+  setSuccess(true);
+} catch (err) {
+  setError("Server error");
+} finally {
+  setLoading(false);
+}
     setLoading(false);
     setSuccess(true);
+
   };
 
   return (
