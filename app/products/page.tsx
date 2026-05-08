@@ -7,6 +7,7 @@ import ProductsSection from '@/component/ProductsSection';
 import { getProducts } from '../lib/products';
 
 const page = async () => {
+  export const revalidate = 0;
   
   const products =await getProducts(); // جلب من الداتابيز مباشرة
  
