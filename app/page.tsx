@@ -53,6 +53,8 @@ function StatsBar() {
     </div>
   );
 }
+  export const revalidate = 0;
+
 
 export default async function HomePage() {
 
