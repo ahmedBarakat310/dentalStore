@@ -53,6 +53,7 @@ function StatsBar() {
     </div>
   );
 }
+// عشان تسمع في الداتا تتحدث مباشرة بدون ما تحتاج تعيد بناء التطبيق في كل مرة
   export const revalidate = 0;
 
 
