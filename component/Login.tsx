@@ -1,11 +1,11 @@
    "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Login = () => {
-
-
+  const router = useRouter();
 
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail]       = useState("");
@@ -42,6 +42,13 @@ try {
   }
 
   setSuccess(true);
+  router.refresh();
+  setEmail("");
+setPassword("");
+
+setShowPass(false);
+ window.location.href = "/";
+
 } catch (err) {
   setError("Server error");
 } finally {

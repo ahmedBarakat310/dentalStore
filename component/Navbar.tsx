@@ -1,12 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [cartCount] = useState(3);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+useEffect(() => {
+  const checkAuth = async () => {
+    try {
+      const res = await fetch("/api/me");
 
+      if (res.ok) {
+        setIsAuth(true);
+      } else {
+        setIsAuth(false);
+      }
+    } catch (error) {
+      setIsAuth(false);
+    }
+  };
+
+  checkAuth();
+}, );
+const handleLogout = async () => {
+  await fetch("/api/logout", {
+    method: "POST",
+  });
+
+  window.location.href = "/";
+};
   const navLinks = [
     { label: "الرئيسية",    href: "/" },
     { label: "المنتجات",    href: "/products" },
@@ -65,11 +89,24 @@ export default function Navbar() {
 
           {/* Desktop Actions + Cart + Hamburger */}
           <div className="flex items-center gap-2">
+            
             {/* Desktop only buttons */}
-            <Link
+            {isAuth ? ( <>
+           
+             <Link
+              href="/"
+              className="hidden sm:inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-[#00c9a7] text-[#0d3d50] hover:bg-[#00b896] transition-all no-underline"
+            onClick={handleLogout}>
+             تسجيل الخروج
+            </Link>
+             <Link href="/profile" className="hidden sm:inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-[#00c9a7] text-[#0d3d50] hover:bg-[#00b896] transition-all no-underline">
+              ملفي
+            </Link>
+            </>):( <>
+                 <Link
               href="/login"
               className="hidden sm:inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold text-white border border-white/25 bg-white/10 hover:bg-white/20 transition-all no-underline"
-            >
+             >
               تسجيل الدخول
             </Link>
             <Link
@@ -78,6 +115,9 @@ export default function Navbar() {
             >
               إنشاء حساب
             </Link>
+            </>)}
+       
+         
 
             {/* Cart — always visible */}
             <Link

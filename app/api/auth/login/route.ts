@@ -12,10 +12,7 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({
       where: { email },
     });
-    console.log("password input:", password);
-    console.log("hashed password in DB:", user?.password);
-
- 
+  
 
     // check password
 
@@ -40,15 +37,15 @@ export async function POST(req: Request) {
     );
 
     // save token in cookie
-    (await
-          // save token in cookie
-          cookies()).set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+const cookieStore = await cookies();
+
+cookieStore.set("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 7,
+});
 
     return NextResponse.json(
       {
