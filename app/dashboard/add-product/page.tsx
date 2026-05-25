@@ -167,34 +167,59 @@ export default function AddProductPage() {
             </div>
 
             {/* صورة المنتج */}
-        <div className="p-6 border-b border-gray-100">
+       <div className="p-6 border-b border-gray-100">
   <p className="text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-4">
     صورة المنتج
   </p>
 
-  <label className="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 hover:bg-gray-100 transition">
-    
-    <div className="text-3xl mb-2">📤</div>
+  <label className="cursor-pointer block">
+    <div
+      className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-6 transition ${
+        image
+          ? "border-[#00c9a7] bg-[#00c9a7]/5"
+          : "border-gray-300 bg-gray-50 hover:bg-gray-100"
+      }`}
+    >
+      {!image ? (
+        <>
+          <div className="text-3xl mb-2">📤</div>
 
-    <p className="text-sm font-medium text-gray-700">
-      اضغط لرفع صورة
-    </p>
+          <p className="text-sm font-medium text-gray-700">
+            اضغط لرفع صورة
+          </p>
 
-    <p className="text-xs text-gray-400 mt-1">
-      PNG, JPG, WEBP (يفضل صورة واضحة)
-    </p>
+          <p className="text-xs text-gray-400 mt-1">
+            PNG, JPG, WEBP (يفضل صورة واضحة)
+          </p>
+        </>
+      ) : (
+        <div className="text-center">
+          <img
+            src={URL.createObjectURL(image)}
+            className="w-24 h-24 object-cover rounded-lg mx-auto mb-2 border"
+          />
 
-    <input
-      type="file"
-      accept="image/*"
-      hidden
-      onChange={(e) => {
-        setImage(e.target.files?.[0] || null);
-      }}
-    />
+          <p className="text-sm font-medium text-gray-700">
+            تم اختيار الصورة
+          </p>
+
+          <p className="text-xs text-gray-400 mt-1">
+            {image.name}
+          </p>
+        </div>
+      )}
+
+      <input
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={(e) => {
+          setImage(e.target.files?.[0] || null);
+        }}
+      />
+    </div>
   </label>
 </div>
-
             {/* الفئة */}
             <div className="p-6 border-b border-gray-100">
               <p className="text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-4">
