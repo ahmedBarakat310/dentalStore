@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 // GET products
 export async function GET() {
   const products = await prisma.product.findMany();
+
   return NextResponse.json(products);
 }
 
@@ -20,12 +21,17 @@ export async function POST(req: Request) {
         stock: Number(body.stock),
         category: body.category,
         isActive: body.isActive ?? true,
+        image: body.image,
       },
     });
 
     return NextResponse.json(product);
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ error: "failed" }, { status: 500 });
+
+    return NextResponse.json(
+      { error: "failed" },
+      { status: 500 }
+    );
   }
 }

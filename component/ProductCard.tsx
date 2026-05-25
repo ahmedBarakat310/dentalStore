@@ -28,8 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {product.image ? (
           <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
         ) : (
-        //   <span>🦷</span>
-            <img src={img.src} alt="Placeholder" className="h-full w-full object-cover" />
+          <span>🦷</span>
         )}
         {product.stock < 5 && product.stock > 0 && (
           <span className="absolute top-2 right-2 bg-[#ff6b35] text-white text-xs font-bold px-3 py-1 rounded-full">
